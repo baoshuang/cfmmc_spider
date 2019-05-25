@@ -32,7 +32,7 @@ def get_current_equity(content):
     return c
 
 
-def do(user_id="***********", passwd='***********'):
+def do(user_id, passwd):
     header = {
         'Connection': 'keep-alive',
         'User-Agent': "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36",
@@ -46,14 +46,14 @@ def do(user_id="***********", passwd='***********'):
     token = flag_filter(content, token_flag)
     veri_code_url = 'https://investorservice.cfmmc.com' + flag_filter(content, veri_code_flag)
     for i in range(200):
-        print(i)
+        print(f'第{i + 1}次尝试识别验证码')
         try:
             tmp_file = BytesIO()
             tmp_file.write(ss.get(veri_code_url).content)
             veri_code = reg_img(tmp_file)
             if veri_code and len(veri_code) == 6:
                 veri_code = ''.join(filter(str.isalnum, veri_code))
-                print(veri_code)
+                print('\t验证码：', veri_code)
                 post_data = {
                     "org.apache.struts.taglib.html.TOKEN": token,
                     "showSaveCookies": '',
@@ -67,7 +67,7 @@ def do(user_id="***********", passwd='***********'):
                     # print('页面:', res)
                     current_equity = get_current_equity(res)
                     print('爬取客户权益 成功')
-                    print(user_id, current_equity)
+                    print(f'账户:{user_id}  客户权益:{current_equity}')
                     return
             time.sleep(1)
             veri_code_url = "https://investorservice.cfmmc.com/veriCode.do?t=" + str(int(time.time() * 1000))
@@ -77,4 +77,8 @@ def do(user_id="***********", passwd='***********'):
 
 
 if __name__ == '__main__':
-    do()
+    # 账号
+    account = '**********'
+    # 密码
+    password = '**********'
+    do(account, password)
