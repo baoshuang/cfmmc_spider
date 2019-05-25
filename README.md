@@ -26,3 +26,4 @@ sudo apt-get install tesseract-ocr
 ```
 pip install pytesseract
 ```
+运行程序前需要将代码中的账号密码变量改为你的真实账号密码
