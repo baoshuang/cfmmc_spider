@@ -28,8 +28,9 @@ def flag_filter(content, flag):
 def get_current_equity(content):
     a = content[content.find('客户权益'):]
     b = a.split('<td class="table-normal-text" align="right">')[1]
-    c = float(b[:b.find('&nbsp;')].strip())
-    return c
+    c = b[:b.find('&nbsp;')].strip()
+    d = ''.join(c.split(','))
+    return float(d)
 
 
 def do(user_id, passwd):
