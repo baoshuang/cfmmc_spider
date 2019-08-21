@@ -27,7 +27,8 @@ def reg_img(file_obj):
 
 
 def flag_filter(content, flag):
-    return content[content.find(flag) + len(flag):].split('"')[0]
+    result = content.split(flag)[1].split('"')[0]
+    return result
 
 
 def get_current_equity(content):
@@ -45,12 +46,12 @@ def do(user_id, passwd):
     }
     url = "https://investorservice.cfmmc.com/login.do"
     token_flag = 'name="org.apache.struts.taglib.html.TOKEN" value="'
-    veri_code_flag = '<img id="imgVeriCode" src="'
+    veri_code_flag = 'src="/veriCode.do?t='
     ss = session()
     res = ss.get(url, headers=header)
     content = res.content.decode()
     token = flag_filter(content, token_flag)
-    veri_code_url = 'https://investorservice.cfmmc.com' + flag_filter(content, veri_code_flag)
+    veri_code_url = 'https://investorservice.cfmmc.com/veriCode.do?t=' + flag_filter(content, veri_code_flag)
     for i in range(200):
         print(f'第{i + 1}次尝试识别验证码')
         try:
@@ -84,7 +85,7 @@ def do(user_id, passwd):
 
 if __name__ == '__main__':
     # 账号
-    account = '**********'
+    account = '**************'
     # 密码
-    password = '**********'
+    password = '**************'
     do(account, password)
